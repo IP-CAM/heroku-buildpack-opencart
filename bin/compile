@@ -328,11 +328,11 @@ source ".profile.d/php.sh"
 
 # Fetch additional extensions
 status "Bundling extensions"
-echo "       apcu"
-fetch_package "ext/$(php_api_version)/php-apcu" "/app/vendor/php" | indent
-echo "       phpredis"
+#echo "       apcu"
+#fetch_package "ext/$(php_api_version)/php-apcu" "/app/vendor/php" | indent
+#echo "       phpredis"
 fetch_package "ext/$(php_api_version)/php-redis" "/app/vendor/php" | indent
-echo "       mongo"
+#echo "       mongo"
 fetch_package "ext/$(php_api_version)/php-mongo" "/app/vendor/php" | indent
 
 if [ -f "$BUILD_DIR/composer.json" ] && package_newrelic_enabled; then
@@ -368,7 +368,7 @@ done
 
 # Fall back to classic mode
 if [ -z "$FRAMEWORK" ]; then
-    FRAMEWORK="$basedir/../frameworks/default"
+    FRAMEWORK="$basedir/../frameworks/opencart"
 fi
 
 # Try to load the framework from the "frameworks" directory if it's just a

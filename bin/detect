@@ -2,6 +2,12 @@
 
 if [ -f "$1/composer.lock" ]; then
     echo "PHP (composer.json)" && exit 0
+elif [ -f "$1/system/startup.php" ]; then
+    echo "Opencart" && exit 0
+else
+    exit 1
+fi
+
 elif [ -f "$1/index.php" ]; then
     echo "PHP (classic)" && exit 0
 else
