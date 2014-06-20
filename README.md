@@ -13,26 +13,24 @@
 
 Use the `--buildpack` parameter when creating a new app:
 
-    heroku create --buildpack https://github.com/CHH/heroku-buildpack-php myapp
+    heroku create --buildpack https://github.com/mithereal/heroku-buildpack-php myapp
 
 Or set the `BUILDPACK_URL` config var on an existing app:
 
-    heroku config:set BUILDPACK_URL=https://github.com/CHH/heroku-buildpack-php
+    heroku config:set BUILDPACK_URL=https://github.com/mithereal/heroku-buildpack-php
 
 * * *
 
 If you want to be on the bleeding edge and use pre-release features, then use
-`git://github.com/CHH/heroku-buildpack-php#development` as buildpack
+`git://github.com/mithereal/heroku-buildpack-php#development` as buildpack
 url.
 
 ## Stack
 
 * NGINX 1.4 or 1.5
-* PHP 5.3, 5.4 and 5.5, with [ZendOpcache][] and [APCu][] ([Info](https://chh-php-test.herokuapp.com/info))
+* PHP 5.3, 5.4 and 5.5
 * PHP-FPM
 
-[ZendOpcache]: http://pecl.php.net/package/ZendOpcache
-[APCu]: http://pecl.php.net/package/apcu
 [Available PHP Versions]: http://chh-heroku-buildpack-php.s3.amazonaws.com/manifest.php
 [Available NGINX Versions]: http://chh-heroku-buildpack-php.s3.amazonaws.com/manifest.nginx
 
@@ -70,7 +68,7 @@ Options:
   is called. All requests which don't match an existing file will be forwarded to
   this document.
 
-### Classic PHP
+### Classic PHP is used for opencart
 
 The classic PHP configuration is used as fallback when no framework was detected. It serves every `.php` file relative to the document root.
 
@@ -181,6 +179,8 @@ Available presets:
 * `silex` (needs `document-root` and `index-document` set)
 * `slim`
 * `symfony2`
+* `opencart`
+* `default`
 
 Example:
 
