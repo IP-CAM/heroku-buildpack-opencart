@@ -10,5 +10,7 @@ detect)
 compile)
     echo "-----> Setting up default configuration"
     cp "$basedir/../conf/nginx/default_site.conf.erb" "$BUILD_DIR/conf/site.conf.erb"
+  touch "$BUILD_DIR/config.php"
+  touch "$BUILD_DIR/admin/config.php"
     ;;
 esac

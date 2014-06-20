@@ -368,7 +368,7 @@ done
 
 # Fall back to classic mode
 if [ -z "$FRAMEWORK" ]; then
-    FRAMEWORK="$basedir/../frameworks/opencart"
+    FRAMEWORK="$basedir/../frameworks/default"
 fi
 
 # Try to load the framework from the "frameworks" directory if it's just a
