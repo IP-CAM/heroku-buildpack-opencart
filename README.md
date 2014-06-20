@@ -13,16 +13,16 @@
 
 Use the `--buildpack` parameter when creating a new app:
 
-    heroku create --buildpack https://github.com/mithereal/heroku-buildpack-php myapp
+    heroku create --buildpack https://github.com/mithereal/heroku-buildpack-opencart myapp
 
 Or set the `BUILDPACK_URL` config var on an existing app:
 
-    heroku config:set BUILDPACK_URL=https://github.com/mithereal/heroku-buildpack-php
+    heroku config:set BUILDPACK_URL=https://github.com/mithereal/heroku-buildpack-opencart
 
 * * *
 
 If you want to be on the bleeding edge and use pre-release features, then use
-`git://github.com/mithereal/heroku-buildpack-php#development` as buildpack
+`git://github.com/mithereal/heroku-buildpack-opencart#development` as buildpack
 url.
 
 ## Stack
