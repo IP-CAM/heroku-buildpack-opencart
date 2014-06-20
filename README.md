@@ -78,7 +78,7 @@ The classic PHP configuration is used for opencart . It serves every `.php` file
 Sets up config files.
 
 This is also used when an `system\startup.php` file was found in the root of your
-project.
+project and no `composer.json` or `framework` setting is set to `opencart` in the `composer.json`.
 
 
 ### Classic PHP 
@@ -86,7 +86,7 @@ project.
 The classic PHP configuration is used as fallback when no framework was detected. It serves every `.php` file relative to the document root.
 
 This is also used when an `index.php` file was found in the root of your
-project and no `composer.json`.
+project When the `framework` setting is set to `default` in the `composer.json`..
 
 ### Magento
 
