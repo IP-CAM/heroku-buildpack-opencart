@@ -15,5 +15,6 @@ compile)
     echo "-----> Setting up opencart configuration"
   touch "$BUILD_DIR/config.php"
   touch "$BUILD_DIR/admin/config.php"
+  read -p "Enter your name : " name
     ;;
 esac
