@@ -1,7 +1,5 @@
 #!/bin/bash
-chmod -R 777 /app/system/cache/
-chmod -R 777 /app/system/logs/
-chmod -R 777 /app/download/
+
 cat << EOF
 ---
 addons:
