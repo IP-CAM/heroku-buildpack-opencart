@@ -15,5 +15,8 @@ compile)
     echo "-----> Setting up opencart configuration"
   touch "$BUILD_DIR/config.php"
   touch "$BUILD_DIR/admin/config.php"
+  chmod -R 777 "$BUILD_DIR/system/cache/"
+  chmod -R 777 "$BUILD_DIR/system/logs/"
+  chmod -R 777 "$BUILD_DIR/download/"
     ;;
 esac
