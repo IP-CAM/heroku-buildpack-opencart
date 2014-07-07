@@ -16,7 +16,7 @@ compile)
   touch "$BUILD_DIR/config.php"
   touch "$BUILD_DIR/admin/config.php"
   chmod -R 777 "$BUILD_DIR/download/"
-  rm -drf "$BUILD_DIR/system/cache/"
+  rm -drf "$BUILD_DIR/system/cache"
   rm -drf "$BUILD_DIR/system/logs"
   ln -s "$BUILD_DIR/system/cache" "$BUILD_DIR/tmp"
   ln -s  "$BUILD_DIR/system/logs" "$BUILD_DIR/log"
