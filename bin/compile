@@ -34,6 +34,8 @@ function fetch_package() {
     local location="$2"
 
     mkdir -p "$location"
+#    local checksum_url="${SWIFT_URL}/package/${package}.md5"
+#    local package_url="${SWIFT_URL}/package/${package}.tgz"
 
     local checksum_url="http://${S3_BUCKET}.s3.amazonaws.com/package/${package}.md5"
     local package_url="http://${S3_BUCKET}.s3.amazonaws.com/package/${package}.tgz"

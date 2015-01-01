@@ -6,6 +6,10 @@ download_url="http://download.icu-project.org/files/icu4c/51.2/icu4c-51_2-src.tg
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
+#source "$basedir/utils"
+#source "$basedir/swift"
+
+#validate_env
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
@@ -35,5 +39,7 @@ s3cmd put \
     --verbose --acl-public \
     "$tempdir/libicu-51.tgz" \
     "s3://$S3_BUCKET/package/libicu-51.tgz"
+
+#swift_upload "package/libicu-51.tgz"
 
 "$basedir/package-checksum" "libicu-51"

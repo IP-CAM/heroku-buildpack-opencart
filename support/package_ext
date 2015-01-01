@@ -36,8 +36,10 @@ build_ext() {
     echo "-----> Building $ext_name for PHP module API version ${zend_api_version} using PHP ${php_version}"
 
     local ext_dir="lib/php/extensions/no-debug-non-zts-${zend_api_version}"
+    #local php_package="${SWIFT_URL}/package/php-${php_version}.tgz"
+    #local php_md5="${SWIFT_URL}/package/php-${php_version}.md5"
     local php_package="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}.tgz"
-local php_md5="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}..md5"
+    local php_md5="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}..md5"
 
     cp "$basedir/ext/${ext_name}" "$tempdir/build.sh"
 
@@ -67,18 +69,23 @@ local php_md5="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}..
     tar zcvf $tempdir/package/ext/${zend_api_version}/php-${ext_name}.tgz .
     popd
 
-  s3cmd put --verbose \
+ s3cmd put --verbose \
             --acl-public \
             "$tempdir/php-${ext_name}.tgz" \
             "s3://$S3_BUCKET/package/ext/${zend_api_version}/php-${ext_name}.tgz"
 
+#    swift_upload package/ext/${zend_api_version}/php-${ext_name}.tgz
     "$basedir/package-checksum" "ext/${zend_api_version}/php-${ext_name}"
 }
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
+#source "$basedir/utils"
+#source "$basedir/swift"
 
 export PATH=${basedir}/../vendor/bin:$PATH
+
+#php_versions=$(curl --silent "${SWIFT_URL}/manifest.php")
 
 php_versions=$(curl --silent "http://${S3_BUCKET}.s3.amazonaws.com/manifest.php")
 

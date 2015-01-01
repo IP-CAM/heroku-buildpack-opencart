@@ -2,6 +2,8 @@
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
+#source "$basedir/utils"
+#source "$basedir/swift"
 
 tempdir=$(mktmpdir composer)
 cd $tempdir
@@ -13,8 +15,12 @@ mkdir composer
 mv composer.phar composer
 mv composer.phar.md5 composer
 
+#swift_upload "composer/composer.phar"
+#swift_upload "composer/composer.phar.md5"
+
 s3cmd put --verbose --acl-public \
     ./composer.phar s3://$S3_BUCKET/composer/composer.phar
 
 s3cmd put --verbose --acl-public \
     ./composer.phar.md5 s3://$S3_BUCKET/composer/composer.phar.md5
+

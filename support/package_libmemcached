@@ -4,8 +4,12 @@ set -e
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
+#source "$basedir/utils"
+#source "$basedir/swift"
 
 export PATH=${basedir}/../vendor/bin:$PATH
+
+#validate_env
 
 if [ -z "$S3_BUCKET" ]; then
     echo "Must set S3_BUCKET environment variable" >&2
@@ -26,7 +30,9 @@ pushd libmemcached-${memcached_version} >/dev/null && \
     mkdir -p /app/vendor/libmemcached && \
     ./configure --with-memcached=no --prefix=/app/vendor/libmemcached && \
     make && make install && popd > /dev/null
+
 rm -r /app/vendor/libmemcached/share/man
+
 mkdir package
 pushd /app/vendor/libmemcached
 tar zcvf ${tempdir}/package/libmemcached-${memcached_version}.tgz .
@@ -40,6 +46,9 @@ s3cmd put --verbose \
     --acl-public \
     "$tempdir/libmemcached-${memcached_version}.tgz" \
     "${s3_path}"
+
+#echo "-----> Uploading package to Swift"
+#swift_upload package/libmemcached-${memcached_version}.tgz
 
 "$basedir/package-checksum" libmemcached-${memcached_version}
 

@@ -1,15 +1,15 @@
 # Advanced PHP Heroku Build Pack
 
-## What makes it unique?
+### What makes it unique?
 
 * Supports PHP 5.3, 5.4 and 5.5
 * Uses the memory of the dyno more efficiently by going with NGINX and PHP-FPM instead of Apache/mod_php
 * Supports Composer out of the box
-* No writing NGINX configuration files: supports CakePHP, Classic PHP applications, Magento, Silex, Slim, Symfony 2, opencart and ZF2 apps with a simple configuration driven by your `composer.json`.
-* Zero-Configuration Symfony 2 deployment.
+* No writing NGINX configuration files with a simple configuration driven by your `composer.json`.
+* Zero-Configuration Opencart deployment.
 * Dynamic installing of [supported extensions](support/ext) listed as `ext-` requirments in `composer.json`.
 
-## How to use it
+### How to use it
 
 Use the `--buildpack` parameter when creating a new app:
 
@@ -25,33 +25,29 @@ If you want to be on the bleeding edge and use pre-release features, then use
 `git://github.com/mithereal/heroku-buildpack-opencart#development` as buildpack
 url.
 
-## Stack
+### Stack
 
-* NGINX 1.4 or 1.5
-* PHP 5.3, 5.4 and 5.5
+* NGINX 1.5 or 1.6
+* PHP 5.3, 5.4 and 5.5, with [ZendOpcache][] and [APCu][] ([Info](https://sample-php-base.appsdeck.eu))
 * PHP-FPM
 
-[Available PHP Versions]: http://chh-heroku-buildpack-php.s3.amazonaws.com/manifest.php
-[Available NGINX Versions]: http://chh-heroku-buildpack-php.s3.amazonaws.com/manifest.nginx
+[ZendOpcache]: http://pecl.php.net/package/ZendOpcache
+[APCu]: http://pecl.php.net/package/apcu
+[Available PHP Versions]: http://opencart-heroku-buildpack-php.s3.amazonaws.com/manifest.php
+[Available NGINX Versions]: http://opencart-heroku-buildpack-php.s3.amazonaws.com/manifest.nginx
 
-## Detection
+### Detection
 
 This buildpack detects apps when the app has a `composer.lock` in the
 app's root.
 
-If an `system\startup.php` is detected in the app's root, then it switches to
-"opencart mode", which means that every ".php" file is served with PHP,
-and the document root is set to the app root.
-
-
-If an `index.php` is detected in the app's root, then it switches to
-"classic mode", which means that every ".php" file is served with PHP,
+When `system\startup.php` is detected in the app's root, every ".php" file is served with PHP,
 and the document root is set to the app root.
 
 When a `composer.lock` is detected, then the buildpack does `composer
 install --no-dev`.
 
-## Environment
+### Environment
 
 This buildpack sets environment variables during compile and runtime:
 
@@ -60,71 +56,7 @@ This buildpack sets environment variables during compile and runtime:
 This buildpack also detects when the app has a node `package.json` in the
 app's root. And will install node dependencies like less for example.
 
-## Frameworks
-
-### CakePHP
-
-Is used when the app requires the `pear-pear.cakephp.org/CakePHP` Pear package or when the
-`extra.heroku.framework` key is set to `cakephp2` in the `composer.json`. This project assumes the layout given in the [FriendsOfCake/app-template](https://github.com/FriendsOfCake/app-template) composer project.
-
-Options:
-
-* `index-document`: With CakePHP apps, this should be the file where `$Dispatcher->dispatch(new CakeRequest(), new CakeResponse());`
-  is called. All requests which don't match an existing file will be forwarded to
-  this document.
-
-### Opencart
-The classic PHP configuration is used for opencart . It serves every `.php` file relative to the document root,
-Sets up config files.
-
-This is also used when an `system\startup.php` file was found in the root of your
-project and no `composer.json` or `framework` setting is set to `opencart` in the `composer.json`.
-
-
-### Classic PHP 
-
-The classic PHP configuration is used as fallback when no framework was detected. It serves every `.php` file relative to the document root.
-
-This is also used when an `index.php` file was found in the root of your
-project When the `framework` setting is set to `default` in the `composer.json`..
-
-### Magento
-
-Is used when the `extra.heroku.framework` key is set to `magento` in the `composer.json`.
-
-### Silex
-
-Is used when the app requires the `silex/silex` package or when the
-`framework` setting is set to `silex` in the `composer.json`.
-
-Options:
-
-* `index-document`: With Silex apps, this should be the file where `$app->run()`
-  is called. All requests which don't match an existing file will be forwarded to
-  this document.
-
-### Slim
-
-Is used when the app requires the `slim/slim` package or when the
-`extra.heroku.framework` key is set to `slim` in the `composer.json`.
-
-Options:
-
-* `index-document`: With Slim apps, this should be the file where `$app->run()`
-  is called. All requests which don't match an existing file will be forwarded to
-  this document.
-
-### Symfony 2
-
-Is detected when the app requires the `symfony/symfony` package or when the
-`framework` setting is set to `symfony2` in the `composer.json`.
-
-This framework preset doesn't need any configuration to work.
-
-Please note that if you use config vars in Composer hooks, or in `compile`
-scripts, then a new code push may be necessary if you decide to change a config variable.
-
-## Extensions
+### Extensions
 
 When the buildpack encounters `ext-` requirements in your `composer.json`, it will look
 up the extension name in the [supported extensions](support/ext) and install them.
@@ -144,12 +76,12 @@ For example, to install the Sundown extension:
 Note that the extension requirements defined by dependencies are not taken into account there.
 It must be required by the project itself.
 
-##Logging
+### Logging
 
 This buildpack defines default log files by framework.
 It also defines log files nginx and php.
 
-## Configuration
+### Configuration
 
 Configuration is done via a file named `composer.json` in the app's
 root.
@@ -178,26 +110,6 @@ which contains the application's front controller.
 This buildpack supports configuration through directives placed in the `heroku`
 key in the `extra` object.
 
-#### framework
-
-_Default: Null_
-
-Use a framework preset for configuration. Some configuration keys cannot
-be overriden!
-
-Available presets:
-
-* `cakephp2`
-* `magento`
-* `silex` (needs `document-root` and `index-document` set)
-* `slim`
-* `symfony2`
-* `opencart`
-* `default`
-
-Example:
-
-    "framework": "silex"
 
 #### document-root
 
