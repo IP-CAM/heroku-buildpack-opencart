@@ -4,17 +4,17 @@ set -e
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
-#source "$basedir/utils"
-#source "$basedir/swift"
+source "$basedir/utils"
+source "$basedir/swift"
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
-#validate_env
+validate_env
 
-if [ -z "$S3_BUCKET" ]; then
-    echo "Must set S3_BUCKET environment variable" >&2
-    exit 1
-fi
+#if [ -z "$S3_BUCKET" ]; then
+#    echo "Must set S3_BUCKET environment variable" >&2
+#    exit 1
+#fi
 
 tempdir="$(mktmpdir libmemcached)"
 cd $tempdir
@@ -38,17 +38,17 @@ pushd /app/vendor/libmemcached
 tar zcvf ${tempdir}/package/libmemcached-${memcached_version}.tgz .
 popd
 
-s3_path=s3://$S3_BUCKET/package/libmemcached-${memcached_version}.tgz
+#s3_path=s3://$S3_BUCKET/package/libmemcached-${memcached_version}.tgz
 
-echo "-----> Uploading package to ${s3_path}"
+#echo "-----> Uploading package to ${s3_path}"
 
-s3cmd put --verbose \
-    --acl-public \
-    "$tempdir/libmemcached-${memcached_version}.tgz" \
-    "${s3_path}"
+#s3cmd put --verbose \
+#    --acl-public \
+#    "$tempdir/libmemcached-${memcached_version}.tgz" \
+#    "${s3_path}"
 
-#echo "-----> Uploading package to Swift"
-#swift_upload package/libmemcached-${memcached_version}.tgz
+echo "-----> Uploading package to Swift"
+swift_upload package/libmemcached-${memcached_version}.tgz
 
 "$basedir/package-checksum" libmemcached-${memcached_version}
 

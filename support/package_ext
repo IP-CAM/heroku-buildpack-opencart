@@ -36,10 +36,10 @@ build_ext() {
     echo "-----> Building $ext_name for PHP module API version ${zend_api_version} using PHP ${php_version}"
 
     local ext_dir="lib/php/extensions/no-debug-non-zts-${zend_api_version}"
-    #local php_package="${SWIFT_URL}/package/php-${php_version}.tgz"
-    #local php_md5="${SWIFT_URL}/package/php-${php_version}.md5"
-    local php_package="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}.tgz"
-    local php_md5="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}..md5"
+    local php_package="${SWIFT_URL}/package/php-${php_version}.tgz"
+    local php_md5="${SWIFT_URL}/package/php-${php_version}.md5"#
+#    local php_package="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}.tgz"
+#    local php_md5="http://${S3_BUCKET}.s3.amazonaws.com/package/php-${php_version}..md5"
 
     cp "$basedir/ext/${ext_name}" "$tempdir/build.sh"
 

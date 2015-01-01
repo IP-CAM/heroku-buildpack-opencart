@@ -4,8 +4,8 @@ set -e
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
-#source "$basedir/utils"
-#source "$basedir/swift"
+source "$basedir/utils"
+source "$basedir/swift"
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
@@ -28,9 +28,9 @@ cd $tempdir
 
 echo "-----> Downloading dependency zlib ${PHP_ZLIB_VERSION}"
 
-#curl -LO "${SWIFT_URL}/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
+curl -LO "${SWIFT_URL}/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
 
-curl -LO "http://$S3_BUCKET.s3.amazonaws.com/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
+#curl -LO "http://$S3_BUCKET.s3.amazonaws.com/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
 tar -xzvf "zlib-${PHP_ZLIB_VERSION}.tar.gz"
 
 echo "-----> Downloading PHP $php_version"
@@ -52,15 +52,15 @@ SH
 )
 fi
 
-#mkdir -p "/app/vendor/php/zlib" "/app/vendor/libmcrypt" "/app/vendor/libicu" \
-#&& curl "${SWIFT_URL}/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
-#&& curl "${SWIFT_URL}/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
-#&& export LD_LIBRARY_PATH=/app/vendor/libicu/lib \
+mkdir -p "/app/vendor/php/zlib" "/app/vendor/libmcrypt" "/app/vendor/libicu" \
+&& curl "${SWIFT_URL}/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
+&& curl "${SWIFT_URL}/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
+&& export LD_LIBRARY_PATH=/app/vendor/libicu/lib \
 
-    mkdir -p "/app/vendor/php/zlib" "/app/vendor/libmcrypt" "/app/vendor/libicu" \
-    && curl "http://${S3_BUCKET}.s3.amazonaws.com/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
-    && curl "http://${S3_BUCKET}.s3.amazonaws.com/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
-    && export LD_LIBRARY_PATH=/app/vendor/libicu/lib \
+#    mkdir -p "/app/vendor/php/zlib" "/app/vendor/libmcrypt" "/app/vendor/libicu" \
+#    && curl "http://${S3_BUCKET}.s3.amazonaws.com/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
+#    && curl "http://${S3_BUCKET}.s3.amazonaws.com/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
+#    && export LD_LIBRARY_PATH=/app/vendor/libicu/lib \
 && export PATH=/app/vendor/libicu/bin:$PATH \
 && mkdir -p "/app/vendor/php/etc/conf.d" \
 && pushd zlib-${PHP_ZLIB_VERSION} >/dev/null && ./configure --prefix=/app/vendor/php/zlib && make && make install && popd > /dev/null \
@@ -111,15 +111,15 @@ pushd /app/vendor/php > /dev/null
 tar zcvf "${tempdir}/package/php-${php_version}.tgz" .
 popd > /dev/null
 
-echo "-----> Moving package to S3"
+#echo "-----> Moving package to S3"
 
-s3cmd put \
-    --verbose --acl-public \
-    "$tempdir/php-${php_version}.tgz" \
-    "s3://$S3_BUCKET/package/php-${php_version}.tgz"
+#s3cmd put \
+#    --verbose --acl-public \
+#    "$tempdir/php-${php_version}.tgz" \
+#    "s3://$S3_BUCKET/package/php-${php_version}.tgz"
 
-#echo "-----> Moving package to Swift"
-#swift_upload "package/php-${php_version}.tgz"
+echo "-----> Moving package to Swift"
+swift_upload "package/php-${php_version}.tgz"
 
 "$basedir/manifest" php
 "$basedir/package-checksum" "php-${php_version}"
