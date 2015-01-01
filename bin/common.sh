@@ -9,8 +9,7 @@ status() {
 
 protip() {
   echo
-  echo "PRO TIP: $*" | indent
-  echo "See https://devcenter.heroku.com/articles/nodejs-support" | indent
+  echo "TIP: $*" | indent
   echo
 }
 
@@ -33,15 +32,6 @@ unique_array() {
   echo "$*" | tr ' ' '\n' | sort -u | tr '\n' ' '
 }
 
-init_log_plex_fifo() {
-  for log_file in $*; do
-    echo "mkdir -p `dirname ${log_file}`"
-  done
-  for log_file in $*; do
-    echo "mkfifo ${log_file}"
-  done
-}
-
 init_log_plex() {
   for log_file in $*; do
     echo "mkdir -p `dirname ${log_file}`"
@@ -56,3 +46,23 @@ tail_log_plex() {
     echo "tail -n 0 -qF --pid=\$\$ ${log_file} &"
   done
 }
+
+export_env_dir() {
+    env_dir=$1
+    blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH|LD_LIBRARY_PATH)$'}
+    if [ -d "$env_dir" ]; then
+        for e in $(ls $env_dir); do
+            echo "$e" | grep -qvE "$blacklist_regex" &&
+            export "$e=$(cat $env_dir/$e)"
+            :
+        done
+    fi
+}
+
+function mktmpdir() {
+    dir=$(mktemp -t php-$1-XXXX)
+    rm -rf $dir
+    mkdir -p $dir
+    echo $dir
+}
+

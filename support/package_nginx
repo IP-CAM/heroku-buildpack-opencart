@@ -22,15 +22,13 @@ if [ -z "$NGINX_ZLIB_VERSION" ]; then
 fi
 
 if [ -z "$NGINX_PCRE_VERSION" ]; then
-    NGINX_PCRE_VERSION=8.32
+    NGINX_PCRE_VERSION=8.35
 fi
 
 zlib_version="$NGINX_ZLIB_VERSION"
 pcre_version="$NGINX_PCRE_VERSION"
 
-tempdir="$( mktemp -t nginx_xxxx )"
-rm -rf $tempdir
-mkdir -p $tempdir
+tempdir=$(mktmpdir nginx)
 cd $tempdir
 
 echo "-----> Downloading dependency PCRE ${pcre_version}"
@@ -50,14 +48,20 @@ tar -xzvf "nginx-${nginx_version}.tar.gz"
 
 echo "-----> Uploading source to build server"
 
-vulcan build --verbose \
-    --name nginx \
-    --prefix /app/vendor/nginx \
-    --source "$tempdir" \
-    --output "$tempdir/nginx-${nginx_version}.tgz" \
-    --command "cd nginx-${nginx_version} && ./configure --prefix=/app/vendor/nginx --with-http_ssl_module --with-pcre=../pcre-${pcre_version} --with-zlib=../zlib-${zlib_version} && make && make install"
+pushd nginx-${nginx_version} >/dev/null && \
+  ./configure \
+    --prefix=/app/vendor/nginx \
+    --with-http_ssl_module \
+    --with-pcre=../pcre-${pcre_version} \
+    --with-zlib=../zlib-${zlib_version} && \
+  make && make install && \
+  popd > /dev/null
 
 echo "-----> Uploading package to s3://$S3_BUCKET/package/nginx-${nginx_version}.tgz"
+
+mkdir package
+pushd /app/vendor/nginx >/dev/null
+tar zcvf "${tempdir}/package/nginx-${nginx_version}.tgz" .
 
 s3cmd put --verbose \
     --acl-public \

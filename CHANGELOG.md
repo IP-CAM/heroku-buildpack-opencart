@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.5.1, 2014-09-17
+
+ * Nginx to 1.6.2
+
+## v0.5, 2014-08-01
+
+ * PHP to 5.6.0
+ * Add new zend API reference
+
+## v0.4.2, 2014-07-31
+
+ * Add support for Laravel framework
+
+## v0.4.1, 2014-07-29
+
+ * PHP to 5.5.15
+ * PHP to 5.4.31
+ * PHP to 5.3.28
+
+## v0.4.0, 2014-06-25
+
+* Use of swift instead of S3 (Used at Appsdeck with OVH Swift)
+* Fix mktemp xxx → XXX for right syntax
+* Helpers for factorizing code in vendor compilation
+* Helpers for swift operations
+* PHP to 5.5.13
+* NGINX to 1.6.0
+* Add warning to switch ['extra']['heroku'] to ['extra']['paas']
+
 ## v0.3.6, 2014-03-26
 
 ### Changes
